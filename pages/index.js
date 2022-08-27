@@ -1,11 +1,13 @@
-import React from 'react'
+import React from 'react';
+
+import { Product, FooterBanner, HeroBanner } from '../components';
 
 const Home = () => {
   return (
     <>
-      HeroBanner
+      <HeroBanner/>
       <div>
-        <h2>Best Selling Productsd</h2>
+        <h2 className='products-heading'>Best Selling Productsd</h2>
         <p>Speakers of many variations</p>
       </div>
 
