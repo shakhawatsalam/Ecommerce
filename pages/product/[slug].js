@@ -7,7 +7,13 @@ import { useStateContext } from '../../context/StateContext';
 const ProductDetails = ({ product, products }) => {
     const { image, name, details, price } = product;
     const [index, setIndex] = useState(0);
-    const { decQty, incQty, qty, onAdd } = useStateContext();
+    const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
+
+    // buy now functionality 
+    const handleBuynow = () => {
+        onAdd(product, qty);
+        setShowCart(true)
+    }
     return (
         <div>
             <div className='product-detail-container'>
@@ -18,8 +24,9 @@ const ProductDetails = ({ product, products }) => {
                     <div className='small-images-container'>
                         {image?.map((item, i) => (
                             <img src={urlFor(item)}
+                                key={i}
                                 alt=""
-                                className={ i === index ? 'small-image selected-image' : 'small-image'}
+                                className={i === index ? 'small-image selected-image' : 'small-image'}
                                 onMouseEnter={() => setIndex(i)}
                             />
                         ))}
@@ -45,7 +52,7 @@ const ProductDetails = ({ product, products }) => {
                     <div className='quantity'>
                         <h3>Quantity:</h3>
                         <p className='quantity-desc'>
-                            <span className='minus'onClick={decQty}>
+                            <span className='minus' onClick={decQty}>
                                 <AiOutlineMinus />
                             </span>
                             <span className='minus' >
@@ -59,7 +66,7 @@ const ProductDetails = ({ product, products }) => {
                     </div>
                     <div className='buttons'>
                         <button type='button' className='add-to-cart' onClick={() => onAdd(product, qty)}>Add to Cart</button>
-                        <button type='button' className='buy-now' onClick=''>Buy Now</button>
+                        <button type='button' className='buy-now' onClick={handleBuynow}>Buy Now</button>
                     </div>
                 </div>
 
@@ -72,7 +79,9 @@ const ProductDetails = ({ product, products }) => {
                     <div className='maylike-products-container track'>
                         {
                             products.map((item) => (
-                                <Product key={item.id}
+
+                                <Product
+                                    key={item._id}
                                     product={item}
                                 />
                             ))
@@ -83,7 +92,6 @@ const ProductDetails = ({ product, products }) => {
         </div>
     )
 };
-
 
 export const getStaticPaths = async () => {
     const query = `*[_type == "product"]{
